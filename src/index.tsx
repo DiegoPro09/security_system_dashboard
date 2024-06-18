@@ -1,19 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryClient } from './shared/ReactQuery/QueryClient';
+import { BrowserRouter } from 'react-router-dom'
+import { AuthProvider } from './modules/auth/AuthContext'
+import { ConfigProvider } from 'antd'
+import App from './modules/app/App';
+import { PalletteEnum } from './shared/pallete/PalleteEnum';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={ReactQueryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <ConfigProvider theme={{ token: { colorPrimary: PalletteEnum.primary } }}>
+            <App />
+          </ConfigProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
